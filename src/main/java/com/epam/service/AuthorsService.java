@@ -13,11 +13,11 @@ public interface AuthorsService {
 
     AuthorDto create(AuthorDto authorDto);
 
-    List<Author> getAll();
+    List<AuthorDto> getAll();
 
     AuthorDto update(AuthorDto authorDto);
 
-    void delete(Long id);
+    String delete(Long id);
 
     Collection<Book> findBooksByAuthor(Long id);
 

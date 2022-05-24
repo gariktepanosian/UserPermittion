@@ -14,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,7 +31,7 @@ public class AuthorsController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-                 consumes = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
         AuthorDto authorDtoCreate = authorsService.create(authorDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(authorDtoCreate);
@@ -44,10 +41,10 @@ public class AuthorsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BookDto>> getBooksByAuthor(@PathVariable Long authorId) {
 
-        List<BookDto> bookDtos = authorsService.findBooksByAuthor(authorId).stream()
-                .map(BookMapper::map)
+        List<BookDto> bookDtoList = authorsService.findBooksByAuthor(authorId)
+                .stream().map(BookMapper::map)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(bookDtos);
+        return ResponseEntity.ok(bookDtoList);
     }
 
     @GetMapping(value = "/{authorId}",
@@ -60,12 +57,7 @@ public class AuthorsController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AuthorDto>> getAll() {
-        List<Author> all = authorRepository.findAll();
-        List<AuthorDto> authorDtos = new ArrayList<>();
-        for (Author author : all) {
-           authorDtos.add(AuthorMapper.map(author));
-        }
-        return ResponseEntity.ok(authorDtos);
+        return ResponseEntity.ok(authorsService.getAll());
     }
 
     @PutMapping(value = "/{authorId}",
@@ -78,20 +70,18 @@ public class AuthorsController {
     }
 
     @DeleteMapping(value = "/{authorId}")
-    public Map<String, Boolean> deleteAuthors(@PathVariable Long authorId) {
+    public String deleteAuthors(@PathVariable Long authorId) {
         Author authorById = authorsService.getById(authorId);
-        authorsService.delete(authorById.getId());
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        String delete = authorsService.delete(authorById.getId());
+        return delete;
     }
 
     @PatchMapping(value = "/{authorId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<AuthorDto> updateAuthorsFields(@PathVariable Long authorId, @RequestBody AuthorDto authorDto){
+    public ResponseEntity<AuthorDto> updateAuthorsFields(@PathVariable Long authorId, @RequestBody AuthorDto authorDto) {
         authorDto.setId(authorId);
         AuthorDto authorUpdateFields = authorsService.updateField(authorDto);
-        return ResponseEntity.status(HttpStatus.UPGRADE_REQUIRED).body(authorUpdateFields);
+        return ResponseEntity.ok(authorUpdateFields);
     }
 }

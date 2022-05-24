@@ -10,4 +10,5 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     Set<Book> findBooksByAuthor_idEquals(Long authorId);
+
 }

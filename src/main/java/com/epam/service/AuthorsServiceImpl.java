@@ -10,6 +10,7 @@ import com.epam.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,8 +35,13 @@ public class AuthorsServiceImpl implements AuthorsService {
     }
 
     @Override
-    public List<Author> getAll() {
-        return authorsRepository.findAll();
+    public List<AuthorDto> getAll() {
+        List<Author> authorList = authorsRepository.findAll();
+        List<AuthorDto> authorDtoList = new ArrayList<>();
+        for (Author author : authorList) {
+           authorDtoList.add(AuthorMapper.map(author));
+        }
+        return authorDtoList;
     }
 
     @Override
@@ -58,8 +64,10 @@ public class AuthorsServiceImpl implements AuthorsService {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         authorsRepository.deleteById(id);
+        String stringInfo ="The Author with the " +  id + "th ID was Deleted " + Boolean.TRUE;
+        return stringInfo;
     }
 
     @Override
@@ -70,6 +78,5 @@ public class AuthorsServiceImpl implements AuthorsService {
     @Override
     public Collection<Book> findBooksByAuthor(Long id) {
         return bookRepository.findBooksByAuthor_idEquals(id);
-
     }
 }

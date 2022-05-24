@@ -7,9 +7,10 @@ public class BookMapper {
 
     public static BookDto map(Book book) {
         BookDto bookDto = new BookDto();
-        bookDto.setBookDate(book.getBookDate());
+        bookDto.setDate(book.getDate());
         bookDto.setName(book.getName());
         bookDto.setId(book.getId());
+        bookDto.setAuthorId(book.getAuthor().getId());
         return bookDto;
     }
 
@@ -17,7 +18,8 @@ public class BookMapper {
         Book book = new Book();
         book.setId(bookDto.getId());
         book.setName(bookDto.getName());
-        book.setBookDate(bookDto.getBookDate());
+        book.setDate(bookDto.getDate());
+        book.getAuthor().setId(bookDto.getAuthorId());
         return book;
     }
 }
