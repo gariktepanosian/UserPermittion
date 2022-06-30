@@ -1,12 +1,15 @@
-package com.epam.service;
+package com.epam.service.impl;
 
+import com.epam.dto.AuthorDto;
 import com.epam.dto.BookDto;
 import com.epam.exceptions.ResourceNotFoundException;
+import com.epam.mapper.AuthorMapper;
 import com.epam.mapper.BookMapper;
 import com.epam.model.Author;
 import com.epam.model.Book;
 import com.epam.repository.AuthorRepository;
 import com.epam.repository.BookRepository;
+import com.epam.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +22,12 @@ public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
     private AuthorRepository authorRepository;
+    private String infoAboutBook;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public BookServiceImpl(BookRepository bookRepository,AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
+        this.authorRepository= authorRepository;
     }
 
     @Override
@@ -31,6 +35,16 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         BookDto map = BookMapper.map(book);
         return map;
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsById(Long id) {
+        List<Author> authorsById = authorRepository.getAuthorsById(id);
+        List<AuthorDto> authorDtoList = new ArrayList<>();
+        for (Author author : authorsById) {
+            authorDtoList.add(AuthorMapper.map(author));
+        }
+        return authorDtoList;
     }
 
     @Override
@@ -56,7 +70,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookDto.getId()).orElseThrow(ResourceNotFoundException::new);
         book.setName(bookDto.getName());
         book.setDate(bookDto.getDate());
-        book.getAuthor().setId(bookDto.getAuthorId());
+        book.setAuthorId(bookDto.getAuthorId());
         Book save = bookRepository.save(book);
         BookDto map = BookMapper.map(save);
         return map;
@@ -65,8 +79,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public String delete(Long id) {
         bookRepository.deleteById(id);
-        String stringInfo ="The Book with the " +  id + "th ID was Deleted " + Boolean.TRUE;
-        return stringInfo;
+        infoAboutBook ="The Book with the " +  id + "th ID was Deleted " + Boolean.TRUE;
+        return infoAboutBook;
     }
 
 
@@ -78,7 +92,7 @@ public class BookServiceImpl implements BookService {
         } else if (bookDto.getDate() != null) {
             book.setDate(bookDto.getDate());
         } else if (bookDto.getId() != null) {
-            book.getAuthor().setId(bookDto.getAuthorId());
+            book.setAuthorId(bookDto.getAuthorId());
         }
         Book save = bookRepository.save(book);
         BookDto map = BookMapper.map(save);

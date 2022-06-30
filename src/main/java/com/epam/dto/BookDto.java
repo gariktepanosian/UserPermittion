@@ -8,6 +8,7 @@ public class BookDto {
     private LocalDate date;
     private Long authorId;
 
+
     public Long getId() {
         return id;
     }

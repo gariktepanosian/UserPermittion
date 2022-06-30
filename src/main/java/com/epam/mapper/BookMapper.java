@@ -10,7 +10,7 @@ public class BookMapper {
         bookDto.setDate(book.getDate());
         bookDto.setName(book.getName());
         bookDto.setId(book.getId());
-        bookDto.setAuthorId(book.getAuthor().getId());
+        bookDto.setAuthorId(book.getAuthorId());
         return bookDto;
     }
 
@@ -19,7 +19,7 @@ public class BookMapper {
         book.setId(bookDto.getId());
         book.setName(bookDto.getName());
         book.setDate(bookDto.getDate());
-        book.getAuthor().setId(bookDto.getAuthorId());
+        book.setAuthorId(bookDto.getAuthorId());
         return book;
     }
 }

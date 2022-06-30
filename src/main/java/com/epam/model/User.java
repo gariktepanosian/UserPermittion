@@ -1,13 +1,34 @@
 package com.epam.model;
 
-import java.util.Set;
+import javax.persistence.*;
+import java.util.Objects;
 
+
+@Entity
+@Table(name = "user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "last_name")
     private String lastName;
-    private Set<Book> bookSet;
+    @Column(name = "username", unique = true)
+    private String username;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "role")
+    private String role;
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getName() {
         return name;
@@ -33,11 +54,32 @@ public class User {
         this.id = id;
     }
 
-    public Set<Book> getBookSet() {
-        return bookSet;
+    public String getUsername() {
+        return username;
     }
 
-    public void setBookSet(Set<Book> bookSet) {
-        this.bookSet = bookSet;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, username, password, role);
     }
 }
