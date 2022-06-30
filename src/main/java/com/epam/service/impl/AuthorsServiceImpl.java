@@ -1,4 +1,4 @@
-package com.epam.service;
+package com.epam.service.impl;
 
 import com.epam.mapper.AuthorMapper;
 import com.epam.dto.AuthorDto;
@@ -7,8 +7,11 @@ import com.epam.model.Author;
 import com.epam.model.Book;
 import com.epam.repository.AuthorRepository;
 import com.epam.repository.BookRepository;
+import com.epam.service.AuthorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +23,7 @@ public class AuthorsServiceImpl implements AuthorsService {
 
     private AuthorRepository authorsRepository;
     private BookRepository bookRepository;
+    private String infoAboutAuthor;
 
     @Autowired
     public AuthorsServiceImpl(AuthorRepository authorsRepository, BookRepository bookRepository) {
@@ -43,7 +47,7 @@ public class AuthorsServiceImpl implements AuthorsService {
         }
         return authorDtoList;
     }
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public AuthorDto update(AuthorDto authorDto) {
         Author authorById = authorsRepository.findById(authorDto.getId()).orElseThrow(ResourceNotFoundException::new);
@@ -66,8 +70,8 @@ public class AuthorsServiceImpl implements AuthorsService {
     @Override
     public String delete(Long id) {
         authorsRepository.deleteById(id);
-        String stringInfo ="The Author with the " +  id + "th ID was Deleted " + Boolean.TRUE;
-        return stringInfo;
+        infoAboutAuthor  ="The Author with the " +  id + "th ID was Deleted " + Boolean.TRUE;
+        return infoAboutAuthor;
     }
 
     @Override
@@ -77,6 +81,6 @@ public class AuthorsServiceImpl implements AuthorsService {
 
     @Override
     public Collection<Book> findBooksByAuthor(Long id) {
-        return bookRepository.findBooksByAuthor_idEquals(id);
+        return bookRepository.findBooksByAuthorId(id);
     }
 }
