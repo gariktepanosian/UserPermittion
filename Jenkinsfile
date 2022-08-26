@@ -9,6 +9,22 @@ pipeline{
            }
          }
 
+         stage('Compile') {
+           steps {
+             echo 'Compiling with mvn'
+             bat "mvn compile"
+             }
+           }
+
+         stage('Test') {
+           steps {
+             echo 'Testing with Junit'
+             bat "mvn test"
+             }
+           }
+
+
+
        }
 
 
