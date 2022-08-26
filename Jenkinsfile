@@ -9,6 +9,13 @@ pipeline{
            }
          }
 
+         stage('Compile') {
+           steps {
+             echo 'Compiling with mvn'
+             bat "mvn compile"
+             }
+           }
+
        }
 
 
