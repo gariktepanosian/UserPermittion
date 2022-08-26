@@ -29,16 +29,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getById(Long id) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        UserDto userDto = UserMapper.mapUser(user);
-        return userDto;
+        return UserMapper.mapUser(user);
     }
 
     @Override
     @Transactional
     public UserDto findUserByUsername(String username) {
         User userByUsername = userRepository.findUserByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Username : " + username + "not found"));
-        UserDto userDto = UserMapper.mapUser(userByUsername);
-        return userDto;
+        return UserMapper.mapUser(userByUsername);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setRole(USER);
-        return UserMapper.mapUser(user);
+        return UserMapper.mapUser(userRepository.save(user));
     }
 
     //UPDATE FIELDS ONLY USER
@@ -81,16 +79,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userDto.getId()).orElseThrow(ResourceNotFoundException::new);
         if (userDto.getName() != null) {
             user.setName(userDto.getName());
-        }  if (userDto.getLastName() != null) {
+        }
+        if (userDto.getLastName() != null) {
             user.setLastName(userDto.getLastName());
-        }  if (userDto.getUsername() != null) {
+        }
+        if (userDto.getUsername() != null) {
             user.setUsername(userDto.getUsername());
-        }  if (userDto.getPassword() != null) {
+        }
+        if (userDto.getPassword() != null) {
             user.setPassword(userDto.getPassword());
         }
         user.setRole(USER);
-
-        return UserMapper.mapUser(user);
+        return UserMapper.mapUser(userRepository.save(user));
     }
 
     @Override
