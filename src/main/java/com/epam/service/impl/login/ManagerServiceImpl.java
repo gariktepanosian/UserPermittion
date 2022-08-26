@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ManagerServiceImpl implements ManagerService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final String ADMIN = "ROLE_" + Role.ADMIN.name();
     @Autowired
     public ManagerServiceImpl(UserRepository userRepository) {
@@ -38,6 +38,6 @@ public class ManagerServiceImpl implements ManagerService {
         } if (userDto.getRole()!=null && !userDto.getRole().equals(ADMIN)) {
             user.setRole((userDto.getRole()));
         }
-        return UserMapper.mapUser(user);
+        return UserMapper.mapUser(userRepository.save(user));
     }
 }

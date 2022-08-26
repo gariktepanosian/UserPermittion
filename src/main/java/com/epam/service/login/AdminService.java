@@ -8,7 +8,7 @@ public interface AdminService {
 
     UserDto create(UserDto userDto);
 
-    String delete(Long id,UserDto userDto);
+    String delete(UserDto userDto);
 
      UserDto updateField(UserDto userDto);
 

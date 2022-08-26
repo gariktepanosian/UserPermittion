@@ -95,3 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12);
     }
 }
+
+//CLASSPATH
+//C:\Program Files\Java\jdk-11.0.15.1\lib/*.jar

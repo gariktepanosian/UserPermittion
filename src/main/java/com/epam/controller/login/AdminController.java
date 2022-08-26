@@ -99,7 +99,7 @@ public class AdminController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         UserDto findUserById = userService.getById(id);
-        String deleteChecking = adminService.delete(findUserById.getId(), findUserById);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(deleteChecking);
+        String deleteChecker = adminService.delete(findUserById);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(deleteChecker);
     }
 }

@@ -34,8 +34,7 @@ public class AuthorsServiceImpl implements AuthorsService {
     @Override
     public AuthorDto create(AuthorDto authorDto) {
         Author author = AuthorMapper.mapAuthor(authorDto);
-        Author savedAuthor = authorsRepository.save(author);
-        return AuthorMapper.map(savedAuthor);
+        return AuthorMapper.map(authorsRepository.save(author));
     }
 
     @Override
