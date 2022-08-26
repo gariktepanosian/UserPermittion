@@ -16,6 +16,15 @@ pipeline{
              }
            }
 
+         stage('Test') {
+           steps {
+             echo 'Testing with Junit'
+             bat "mvn test"
+             }
+           }
+
+
+
        }
 
 
